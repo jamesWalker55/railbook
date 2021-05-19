@@ -12,8 +12,6 @@ c = User.create(email: "c@c", password: "cccccc")
 d = User.create(email: "d@d", password: "dddddd")
 e = User.create(email: "e@e", password: "eeeeee")
 
-# a = User.find_by(email: "a@a");b = User.find_by(email: "b@b");c = User.find_by(email: "c@c");d = User.find_by(email: "d@d");e = User.find_by(email: "e@e");
-
 a.friendships.build(friend: b, accepted: true).save
 a.friendships.build(friend: c, accepted: true).save
 a.friendships.build(friend: d, accepted: false).save

@@ -6,6 +6,7 @@ class User < ApplicationRecord
          :omniauthable, omniauth_providers: %i[facebook]
 
   has_many :friendships
+  has_many :posts
   # has_many :friends, through: :friendships
 
   # class_name is literally the name of the class
@@ -18,6 +19,26 @@ class User < ApplicationRecord
     :sent_friendship => -> (u1, u2) { u1.sent_friendships.where(friend_id: u2).limit(1) },
     :received_friendship => -> (u1, u2) { u1.received_friendships.where(user_id: u2).limit(1) },
   }
+
+  def self.a
+    User.find_by(email: "a@a")
+  end
+
+  def self.b
+    User.find_by(email: "b@b")
+  end
+
+  def self.c
+    User.find_by(email: "c@c")
+  end
+
+  def self.d
+    User.find_by(email: "d@d")
+  end
+
+  def self.e
+    User.find_by(email: "e@e")
+  end
 
   def friends
     forward_friend_ids = friendships.select("friend_id as user_id").where(accepted: true)
