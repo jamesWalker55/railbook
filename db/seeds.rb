@@ -24,3 +24,5 @@ b.friendships.build(friend: d, accepted: true).save
 
 c.friendships.build(friend: d, accepted: true).save
 
+d.friendships.build(friend: e, accepted: false).save
+

@@ -1,4 +1,69 @@
 <p id="notice"><%= notice %></p>
+<p id="alert"><%= alert %></p>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
+<h2>User: <%= @user.email %></h2>
+
+<h3>Friends:</h3>
+<ul>
+  <% if @user.friends.empty? %>
+    <li>No friends yet!</li>
+  <% else %>
+    <% @user.friends.each do |friend| %>
+      <li><%= link_to friend.email, friend %></li>
+    <% end %>
+  <% end %>
+</ul>
+
+<% if @user == current_user %>
+  <%# User is viewing own page %>
+  <h2>VIEWING OWN PAGE</h2>
+  <% unless @user.received_friendships.empty? %>
+    <h3>Incoming friend requests:</h3>
+    <ul>
+      <% @user.received_friendships.includes(:user).each do |fs| %>
+        <li><%= link_to fs.user.email, fs.user %> | <%= link_to "Accept", fs, method: :patch %></li>
+      <% end %>
+    </ul>
+  <% end %>
+  <% unless @user.sent_friendships.empty? %>
+    <h3>Outgoing friend requests:</h3>
+    <ul>
+      <% @user.sent_friendships.includes(:friend).each do |fs| %>
+        <li><%= link_to fs.friend.email, fs.friend %> | <%= link_to "Delete", fs, method: :delete %></li>
+      <% end %>
+    </ul>
+  <% end %>
+<% else %>
+  <%# User is viewing someone else's page %>
+  <h2>VIEWING OTHER'S PAGE</h2>
+  <% status, friendship = current_user.get_friendship @user %>
+  <code><%= friendship.to_json %></code>
+  <% if status == :friends %>
+    <p>You are friends!</p>
+    <%= form_with model: friendship, method: :delete do |form| %>
+      <%= form.submit "Remove friend" %>
+    <% end %>
+  <% elsif status == :sent_friendship %>
+    <p>You sent this person a friend request!</p>
+    <%= form_with model: friendship, method: :delete do |form| %>
+      <%= form.submit "Delete friend request" %>
+    <% end %>
+  <% elsif status == :received_friendship %>
+    <p>You received a friend request from this person!</p>
+    <%= form_with model: friendship do |form| %>
+      <%= form.submit "Accept friend request" %>
+    <% end %>
+    <%= form_with model: friendship, method: :delete do |form| %>
+      <%= form.submit "Delete friend request" %>
+    <% end %>
+  <% else %>
+    <p>You are not friends with this person.</p>
+    <%= form_with model: friendship do |form| %>
+      <%= form.hidden_field :friend_id, value: @user.id %>
+      <%= form.submit "Send a friend request" %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%# <%= link_to 'Edit', edit_user_path(@user) %>
 <%= link_to 'Back', users_path %>

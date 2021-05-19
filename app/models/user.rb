@@ -13,21 +13,38 @@ class User < ApplicationRecord
   has_many :inverse_friendships, class_name: "Friendship", foreign_key: :friend_id
   # has_many :inverse_friends, through: :inverse_friendships, source: :user
 
+  FRIENDSHIP_QUERY_HASH = {
+    :friends => -> (u1, u2) { u1.friendships.where(friend_id: u2, accepted: true).or(u1.inverse_friendships.where(user_id: u2, accepted: true)).limit(1) },
+    :sent_friendship => -> (u1, u2) { u1.sent_friendships.where(friend_id: u2).limit(1) },
+    :received_friendship => -> (u1, u2) { u1.received_friendships.where(user_id: u2).limit(1) },
+  }
+
   def friends
     forward_friend_ids = friendships.select("friend_id as user_id").where(accepted: true)
     backwards_friend_ids = inverse_friendships.select(:user_id).where(accepted: true)
     User.where(id: forward_friend_ids).or(User.where(id: backwards_friend_ids))
   end
 
-  def received_friendships
-    # backwards_friend_ids = inverse_friendships.select(:user_id).where(accepted: false)
-    # User.where(id: backwards_friend_ids)
-    inverse_friendships.where(accepted: false)
+  def all_friendships
+    # all friendships with this user, accepted and unaccepted, sent and received
+    friendships.or inverse_friendships
   end
 
   def sent_friendships
-    # forward_friend_ids = friendships.select("friend_id as user_id").where(accepted: false)
-    # User.where(id: forward_friend_ids)
     friendships.where(accepted: false)
+  end
+
+  def received_friendships
+    inverse_friendships.where(accepted: false)
+  end
+
+  def get_friendship(user)
+    # return this user's relationship with another user as a symbol-friendship pair
+    FRIENDSHIP_QUERY_HASH.each do |status, query|
+      if query.call(self, user).count == 1
+        return [status, query.call(self, user).first]
+      end
+    end
+    [nil, friendships.build(friend: user)]
   end
 end
