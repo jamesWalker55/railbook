@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :posts
   has_many :like_relations
   has_many :comments
+  has_one_attached :image
   # has_many :friends, through: :friendships
 
   # class_name is literally the name of the class

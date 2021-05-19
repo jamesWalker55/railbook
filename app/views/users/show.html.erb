@@ -1,5 +1,12 @@
 <h2>User: <%= @user.email %></h2>
 
+<h3>Profile image:</h3>
+<% if @user.image.attached? %>
+  <%= image_tag @user.image.variant(resize: "200x200!") %>
+<% else %>
+  <%= image_tag "no image.png" %>
+<% end %>
+
 <h3>Friends:</h3>
 <ul>
   <% if @user.friends.empty? %>
@@ -30,6 +37,7 @@
       <% end %>
     </ul>
   <% end %>
+  <%= link_to "Edit profile", edit_user_registration_path %>
 <% else %>
   <%# User is viewing someone else's page %>
   <h2>VIEWING OTHER'S PAGE</h2>
