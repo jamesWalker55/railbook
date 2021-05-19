@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :posts
-  root "users#index"
+  root "posts#index"
   resources :friendships
   resources :comments, only: %i[create destroy]
   resources :like_relations, only: %i[create destroy]
