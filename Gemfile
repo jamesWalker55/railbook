@@ -62,3 +62,5 @@ gem "omniauth-facebook", "~> 8.0"
 gem "omniauth-rails_csrf_protection", "~> 1.0"
 
 gem "image_processing", "~> 1.12"
+
+gem "bulma-rails", "~> 0.9.1"
