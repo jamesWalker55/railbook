@@ -42,15 +42,15 @@ class User < ApplicationRecord
     User.find_by(email: "e@e")
   end
 
-  def friends
+  def friends(include_self: false)
     forward_friend_ids = friendships.select("friend_id as user_id").where(accepted: true)
     backwards_friend_ids = inverse_friendships.select(:user_id).where(accepted: true)
-    User.where(id: forward_friend_ids).or(User.where(id: backwards_friend_ids))
-  end
-
-  def all_friendships
-    # all friendships with this user, accepted and unaccepted, sent and received
-    friendships.or inverse_friendships
+    base_relation = User.where(id: forward_friend_ids).or(User.where(id: backwards_friend_ids))
+    if include_self
+      base_relation.or(User.where(id: self))
+    else
+      base_relation
+    end
   end
 
   def sent_friendships

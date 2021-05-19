@@ -1,0 +1,2 @@
+module LikeRelationsHelper
+end
