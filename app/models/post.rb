@@ -1,6 +1,6 @@
 class Post < ApplicationRecord
-  has_many :like_relations, dependent: :delete
-  has_many :comments, dependent: :delete
+  has_many :like_relations, dependent: :delete_all
+  has_many :comments, dependent: :delete_all
   belongs_to :user
 
   def get_user_like(user)

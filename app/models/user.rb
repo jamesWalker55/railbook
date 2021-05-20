@@ -5,11 +5,11 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :omniauthable, omniauth_providers: %i[facebook]
 
-  has_many :friendships, dependent: :delete
-  has_many :posts, dependent: :delete
-  has_many :like_relations, dependent: :delete
-  has_many :comments, dependent: :delete
-  has_one_attached :image, dependent: :delete
+  has_many :friendships, dependent: :delete_all
+  has_many :posts, dependent: :delete_all
+  has_many :like_relations, dependent: :delete_all
+  has_many :comments, dependent: :delete_all
+  has_one_attached :image, dependent: :delete_all
   # has_many :friends, through: :friendships
 
   # class_name is literally the name of the class
