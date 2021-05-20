@@ -11,30 +11,14 @@
   </head>
 
   <body>
-    <div>
-      <p id="notice"><%= notice %></p>
-      <p id="alert"><%= alert %></p>
+    <%= render("shared/navbar") %>
+    <div id="notifications" class="container">
+      <%= render("shared/notification", message: "Test notification", color: :info) %>
+      <%= render("shared/notification", message: notice, color: :info) if notice %>
+      <%= render("shared/notification", message: alert, color: :danger) if alert %>
     </div>
-    <nav>
-      <h2>Navigation</h2>
-      <ul>
-        <% if user_signed_in? %>
-          <li>
-            Logged in as: <%= link_to current_user.email, current_user %>
-            |
-            <%= link_to "Sign out", destroy_user_session_path, method: :delete %>
-          </li>
-        <% else %>
-          <li>
-            Not logged in!
-            |
-            <%= link_to "Log in", new_user_session_path %>
-          </li>
-        <% end %>
-        <li><%= link_to "All users (users#index)", users_path %></li>
-        <li><%= link_to "All posts (posts#index)", posts_path %></li>
-      </ul>
-    </nav>
-    <%= yield %>
+    <main class="section">
+      <%= yield %>
+    </main>
   </body>
 </html>
