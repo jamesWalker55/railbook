@@ -13,7 +13,7 @@ class LikeRelationsController < ApplicationController
   def destroy
     like = current_user.like_relations.find(params[:id])
     like.destroy
-    redirect_to request.referrer, notice: "Comment deleted."
+    redirect_to request.referrer, notice: "Unliked post."
   end
 
   private 
