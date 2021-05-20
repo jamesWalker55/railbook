@@ -1,0 +1,13 @@
+<%
+figure_class = "image is-#{size}x#{size}"
+if local_assigns[:cls]
+  figure_class += " " + cls
+end
+%>
+<figure class="<%= figure_class %>">
+  <% if user.image.attached? %>
+    <%= image_tag user.image.variant(resize: "#{size}x#{size}!") %>
+  <% else %>
+    <%= image_tag "no image.png" %>
+  <% end %>
+</figure>
