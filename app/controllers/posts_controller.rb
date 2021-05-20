@@ -3,7 +3,7 @@ class PostsController < ApplicationController
 
   # GET /posts or /posts.json
   def index
-    @posts = Post.visible_to_user current_user
+    @posts = Post.visible_to_user(current_user).order(updated_at: :desc)
   end
 
   # GET /posts/1 or /posts/1.json
