@@ -13,11 +13,11 @@
   <body>
     <%= render("shared/navbar") %>
     <div id="notifications" class="container">
-      <%= render("shared/notification", message: "Test notification", color: :info) %>
+      <%#= render("shared/notification", message: "Test notification", color: :info) %>
       <%= render("shared/notification", message: notice, color: :info) if notice %>
       <%= render("shared/notification", message: alert, color: :danger) if alert %>
     </div>
-    <main class="section">
+    <main class="container">
       <%= yield %>
     </main>
   </body>
