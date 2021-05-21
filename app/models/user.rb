@@ -5,6 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :omniauthable, omniauth_providers: %i[facebook]
 
+  validates :name, presence: true
+
   has_many :friendships, dependent: :delete_all
   has_many :posts, dependent: :delete_all
   has_many :like_relations, dependent: :delete_all
