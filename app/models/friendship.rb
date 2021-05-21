@@ -5,6 +5,6 @@ class Friendship < ApplicationRecord
   # validates :accepted, presence: true
   validates_inclusion_of :accepted, in: [true, false]
 
-  belongs_to :user
+  belongs_to :user, counter_cache: true
   belongs_to :friend, class_name: "User"
 end
