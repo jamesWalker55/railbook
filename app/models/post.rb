@@ -1,4 +1,6 @@
 class Post < ApplicationRecord
+  validates :content, presence: true
+
   has_many :like_relations, dependent: :delete_all
   has_many :comments, dependent: :delete_all
   belongs_to :user
