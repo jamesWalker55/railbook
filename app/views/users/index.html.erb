@@ -1,5 +1,15 @@
-<h1>Users</h1>
+<div class="box">
+  <div class="media">
+    <div class="media-content">
+      <h3 class="title is-3">All users</h3>
+      <% @users.each do |user| %>
+        <%= render "user_row", user: user %>
+      <% end %>
+    </div>
+  </div>
+</div>
 
+<!--
 <table>
   <thead>
     <tr>
@@ -11,7 +21,7 @@
     <% @users.each do |user| %>
       <tr>
         <td><%= link_to user.email, user %></td>
-        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Delete', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -20,3 +30,4 @@
 <br>
 
 <%= link_to 'New User', new_user_path %>
+-->
