@@ -18,5 +18,10 @@ module Railbook
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # add `is-danger` to form fields with errors
+    config.action_view.field_error_proc = Proc.new { |html_tag, instance| 
+      html_tag.gsub('class="', 'class="is-danger ').html_safe
+    }
   end
 end
