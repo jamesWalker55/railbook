@@ -18,7 +18,8 @@
       <div class="content">
         <p>
           <%= link_to user, class: "has-text-dark" do %>
-            <strong><%= user.email %></strong>
+            <strong><%= user.name %></strong>
+            <span class="has-text-grey"><%= user.email %></span>
           <% end %>
           <%= link_to post do %>
             <small class="has-text-grey-dark"><%= time_ago_in_words post.created_at %> ago</small>

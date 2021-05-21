@@ -28,7 +28,7 @@
           <%= link_to current_user, class: "navbar-link" do %>
             <%= render "shared/profile_image", user: current_user, size: 32 %>
             <span class="block ml-4">
-              <%= current_user.email %>
+              <%= current_user.name %>
             </span>
           <% end %>
 
