@@ -1,0 +1,22 @@
+<% status, friendship = current_user.get_friendship user %>
+<% if status == :friends %>
+  <%= form_with model: friendship, method: :delete do |form| %>
+    <%= form.submit "Remove friend", class: "button is-danger is-small" %>
+  <% end %>
+<% elsif status == :sent_friendship %>
+  <%= form_with model: friendship, method: :delete do |form| %>
+    <%= form.submit "Delete friend request", class: "button is-warning is-small" %>
+  <% end %>
+<% elsif status == :received_friendship %>
+  <%= form_with model: friendship do |form| %>
+    <%= form.submit "Accept friend request", class: "button is-info is-small" %>
+  <% end %>
+  <%= form_with model: friendship, method: :delete do |form| %>
+    <%= form.submit "Delete friend request", class: "button is-warning is-small" %>
+  <% end %>
+<% else %>
+  <%= form_with model: friendship do |form| %>
+    <%= form.hidden_field :friend_id, value: user.id %>
+    <%= form.submit "Send a friend request", class: "button is-primary is-small" %>
+  <% end %>
+<% end %>
