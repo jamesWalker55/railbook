@@ -1,0 +1,74 @@
+<%# render a post, including comments and a comment form %>
+
+<% user = post.user %>
+<% like_status, like_rel = post.get_user_like current_user %>
+<div class="box">
+  <article class="media">
+
+    <%# image on left side %>
+    <div class="media-left">
+      <%= link_to user, class: "has-text-dark" do %>
+        <%= render "shared/profile_image", user: user, size: 64 %>
+      <% end %>
+    </div>
+
+    <%# everything else %>
+    <div class="media-content">
+
+      <div class="content">
+        <p>
+          <%= link_to user, class: "has-text-dark" do %>
+            <strong><%= user.email %></strong>
+          <% end %>
+          <%= link_to post do %>
+            <small class="has-text-grey-dark"><%= time_ago_in_words post.created_at %> ago</small>
+          <% end %>
+          <br>
+          <%= post.content %>
+        </p>
+      </div>
+      <div class="content">
+        <div class="level mb-2">
+          <div class="level-left">
+            <% if like_status %>
+              <%= form_with model: like_rel, method: :delete do |form| %>
+                <%= form.hidden_field :post_id, value: post.id %>
+                <%= form.submit "Unlike", class: "button is-light is-small" %>
+              <% end %>
+            <% else %>
+              <%= form_with model: like_rel do |form| %>
+                <%= form.hidden_field :post_id, value: post.id %>
+                <%= form.submit "Like", class: "button is-light is-small" %>
+              <% end %>
+            <% end %>
+            <small class="ml-3"><%= post.like_relations.count %> likes</small>
+          </div>
+        </div>
+        <% if post.user == current_user %>
+          <%= link_to "Delete Post", post, method: :delete, data: { confirm: 'Are you sure?' }, class: "button is-warning is-small" %>
+        <% end %>
+      </div>
+
+      <% post.comments.each do |comment| %>
+        <%= render "post_comment", comment: comment %>
+      <% end %>
+
+      <%= form_with model: Comment.new, class: "media" do |form| %>
+        <div class="media-content">
+          <div class="field">
+            <div class="control">
+              <%= form.text_field :content, class: "input" %>
+            </div>
+          </div>
+          <%= form.hidden_field :post_id, value: post.id %>
+          <div class="field">
+            <div class="control">
+              <%= form.submit "Comment", class: "button is-info" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+    </div>
+  </article>
+</div>

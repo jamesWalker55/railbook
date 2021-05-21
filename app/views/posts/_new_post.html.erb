@@ -1,0 +1,31 @@
+<%# render a post, including comments and a comment form %>
+
+<% post = current_user.posts.build %>
+<% user = current_user %>
+<div class="box">
+  <h3 class="subtitle is-4">Post something:</h3>
+  <article class="media">
+
+    <div class="media-left">
+
+      <%= link_to user, class: "has-text-dark" do %>
+        <%= render "shared/profile_image", user: user, size: 64 %>
+      <% end %>
+
+    </div>
+
+    <%= form_with model: post, class: "media-content" do |form| %>
+      <div class="field">
+        <div class="control">
+          <%= form.text_field :content, class: "input" %>
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <%= form.submit "Post!", class: "button is-primary" %>
+        </div>
+      </div>
+    <% end %>
+
+  </article>
+</div>
