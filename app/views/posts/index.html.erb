@@ -1,5 +1,5 @@
 <%= render "new_post" %>
 
-<% @posts.each do |post| %>
+<% @posts.includes(:comments).each do |post| %>
   <%= render "post", post: post %>
 <% end %>
