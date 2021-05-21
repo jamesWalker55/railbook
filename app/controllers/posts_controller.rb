@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: %i[ show edit update destroy ]
+  before_action :set_personal_post, only: %i[ edit update destroy ]
+  before_action :set_visible_post, only: %i[ show ]
 
   # GET /posts or /posts.json
   def index
@@ -25,27 +26,27 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
-        format.html { redirect_to @post, notice: "Post was successfully created." }
+        format.html { redirect_to root_path, notice: "Post was successfully created." }
         format.json { render :show, status: :created, location: @post }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { redirect_to root_path, notice: "Unable to create post!" }
         format.json { render json: @post.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /posts/1 or /posts/1.json
-  def update
-    respond_to do |format|
-      if @post.update(post_params)
-        format.html { redirect_to @post, notice: "Post was successfully updated." }
-        format.json { render :show, status: :ok, location: @post }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+  # # PATCH/PUT /posts/1 or /posts/1.json
+  # def update
+  #   respond_to do |format|
+  #     if @post.update(post_params)
+  #       format.html { redirect_to @post, notice: "Post was successfully updated." }
+  #       format.json { render :show, status: :ok, location: @post }
+  #     else
+  #       format.html { render :edit, status: :unprocessable_entity }
+  #       format.json { render json: @post.errors, status: :unprocessable_entity }
+  #     end
+  #   end
+  # end
 
   # DELETE /posts/1 or /posts/1.json
   def destroy
@@ -57,9 +58,14 @@ class PostsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_post
-      @post = Post.find(params[:id])
+    def set_personal_post
+      # allow access to personal posts only
+      @post = current_user.posts.find(params[:id])
+    end
+
+    def set_visible_post
+      # allow access to personal posts and friends posts
+      @post = Post.visible_to_user(current_user).find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
