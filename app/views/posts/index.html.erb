@@ -1,5 +1,5 @@
 <%= render "new_post" %>
 
-<% @posts.includes(:comments).each do |post| %>
+<% @posts.includes(:comments, :like_relations).each do |post| %>
   <%= render "post", post: post %>
 <% end %>

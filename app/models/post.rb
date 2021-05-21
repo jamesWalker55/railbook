@@ -6,7 +6,7 @@ class Post < ApplicationRecord
   belongs_to :user
 
   def get_user_like(user)
-    query = like_relations.where(user: user)
+    query = like_relations.where(user: user).limit(1)
     if query.count > 0
       [:liked, query.first]
     else
