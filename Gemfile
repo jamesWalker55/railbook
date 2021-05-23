@@ -66,3 +66,5 @@ gem "image_processing", "~> 1.12"
 gem "bulma-rails", "~> 0.9.1"
 
 gem "bootstrap-icons-helper", "~> 1.0"
+
+gem "letter_opener", group: :development
