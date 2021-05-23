@@ -1,6 +1,12 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
 
+  # send mail after user creation
+  after_create :send_welcome_mail
+  def send_welcome_mail
+    UserMailer.with(user: self).welcome_email.deliver_later
+  end
+
   # GET /users or /users.json
   def index
     @users = User.all.order(:name)
