@@ -3,11 +3,14 @@ Rails.application.routes.draw do
   root "posts#index"
 
   # non-restful routes for creating friends
-  post "friend/:friend_id", to: "friends#create"
-  patch "friend/:friend_id", to: "friends#update"
-  delete "friend/:friend_id", to: "friends#destroy"
+  resources :friends, only: %i[create update destroy] do
+    member do
+      post "/", action: "create"
+      patch "/", action: "update"
+      delete "/", action: "destroy"
+    end
+  end
 
-  # resources :friendships
   resources :comments, only: %i[create destroy]
   resources :like_relations, only: %i[create destroy]
   devise_for :users

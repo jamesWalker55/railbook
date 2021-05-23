@@ -4,7 +4,7 @@ class FriendsController < ApplicationController
   # POST /friendships or /friendships.json
   def create
     # send friend request
-    @friendship = current_user.friendships.build(friend_id: friendship_params[:friend_id], accepted: false)
+    @friendship = current_user.friendships.build(friend_id: friendship_params[:id], accepted: false)
 
     if @friendship.save
       redirect_to request.referrer, notice: 'Friend request sent.'
@@ -15,7 +15,7 @@ class FriendsController < ApplicationController
 
   def update
     # accept friend request
-    @friendship = current_user.received_friendships.where(user_id: friendship_params[:friend_id]).first
+    @friendship = current_user.received_friendships.where(user_id: friendship_params[:id]).first
     @friendship.accepted = true
 
     if @friendship.save
@@ -28,7 +28,7 @@ class FriendsController < ApplicationController
   # DELETE /friendships/1 or /friendships/1.json
   def destroy
     # refuse friend request / remove friend
-    @friendship = current_user.get_friendship friendship_params[:friend_id]
+    @friendship = current_user.get_friendship friendship_params[:id]
     @friendship.destroy
     if @friendship.accepted
       redirect_to request.referrer, notice: 'Friend removed.'
@@ -40,12 +40,12 @@ class FriendsController < ApplicationController
   private
 
   def validate_friend_request
-    redirect_to root_path, alert: "Cannot send friend request to yourself!" and return if current_user.id == friendship_params[:friend_id].to_i
-    redirect_to root_path, alert: "Friend request already exists!" and return unless current_user.has_friendship.where(id: friendship_params[:friend_id]).empty?
+    redirect_to root_path, alert: "Cannot send friend request to yourself!" and return if current_user.id == friendship_params[:id].to_i
+    redirect_to root_path, alert: "Friend request already exists!" and return unless current_user.has_friendship.where(id: friendship_params[:id]).empty?
   end
 
   # Only allow a list of trusted parameters through.
   def friendship_params
-    params.permit(:friend_id)
+    params.permit(:id)
   end
 end
