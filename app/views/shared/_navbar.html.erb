@@ -23,6 +23,33 @@
 
     <div class="navbar-end">
       <% if user_signed_in? %>
+        <%# list friend requests if any %>
+        <% unless current_user.received_friendships.empty?%>
+          <div class="navbar-item has-dropdown is-hoverable">
+            <%= link_to current_user, class: "navbar-link" do %>
+              <p>
+                <strong><%= current_user.received_friendships.count %></strong>
+                friend requests
+              </p>
+            <% end %>
+
+            <div class="navbar-dropdown">
+              <% current_user.received_friendships(return_users: true).each do |friend| %>
+                <div class="navbar-item level">
+                  <div class="level-left">
+                    <%= link_to friend.name, friend %>
+                  </div>
+                  <div class="level-right ml-3">
+                    <%= render "users/friend_button", mode: :accept_request, user: friend do %>
+                      <button class="button is-info is-small">Accept</button>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
         <%# link to own profile %>
         <div class="navbar-item has-dropdown is-hoverable">
           <%= link_to current_user, class: "navbar-link" do %>
