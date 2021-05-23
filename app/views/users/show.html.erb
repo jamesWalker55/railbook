@@ -16,10 +16,13 @@
           <h4 class="subtitle is-4 mb-2">Incoming friend requests:</h4>
           <% @user.received_friendships.includes(:user).each do |fs| %>
             <%= render "user_row", user: fs.user do %>
-              <%= form_with model: fs do |form| %>
-                <%= form.submit "Accept friend request", class: "button is-info is-small" %>
+              <%#= form_with model: fs do |form| %>
+                <%#= form.submit "Accept friend request", class: "button is-info is-small" %>
+              <%# end %>
+              <%= link_to "/friend/#{fs.user_id}", method: :patch do %>
+                <button class="button is-info is-small">Accept friend request</button>
               <% end %>
-              <%= link_to fs, method: :delete, data: { confirm: "Decline this friend request?" } do %>
+              <%= link_to "/friend/#{fs.user_id}", method: :delete, data: { confirm: "Decline this friend request?" } do %>
                 <button class="delete is-pulled-right"></button>
               <% end %>
             <% end %>
@@ -30,7 +33,7 @@
           <h4 class="subtitle is-4 mb-2">Outgoing friend requests:</h4>
           <% @user.sent_friendships.includes(:friend).each do |fs| %>
             <%= render "user_row", user: fs.friend do %>
-              <%= link_to fs, method: :delete, data: { confirm: "Remove this friend request?" } do %>
+              <%= link_to "/friend/#{fs.friend_id}", method: :delete, data: { confirm: "Remove this friend request?" } do %>
                 <button class="delete is-pulled-right"></button>
               <% end %>
             <% end %>
@@ -42,7 +45,7 @@
 
         <%# friend buttons if viewing other's page %>
         <h4 class="subtitle is-4 mb-2">Friend status:</h4>
-        <%= render "friend_buttons", user: @user %>
+        <%#= render "friend_buttons", user: @user %>
         <br>
 
       <% end %>
@@ -56,7 +59,7 @@
           <% if @user == current_user %>
             <% @user.friends.each do |friend| %>
               <%= render "user_row", user: friend do %>
-                <%= link_to @user.query_friendship(friend, :friends).first, method: :delete, data: { confirm: "Remove this user as friend?" } do %>
+                <%= link_to "/friend/#{friend.id}", method: :delete, data: { confirm: "Remove this friend request?" } do %>
                   <button class="delete is-pulled-right"></button>
                 <% end %>
               <% end %>

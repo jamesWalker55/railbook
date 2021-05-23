@@ -28,7 +28,6 @@ class FriendshipsController < ApplicationController
   # DELETE /friendships/1 or /friendships/1.json
   def destroy
     @friendship.destroy
-    redirect_to request.referrer, notice: "Friend removed."
   end
 
   private

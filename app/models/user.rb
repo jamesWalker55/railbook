@@ -81,12 +81,7 @@ class User < ApplicationRecord
   end
 
   def get_friendship(user)
-    # return this user's relationship with another user as a symbol-friendship pair
-    FRIENDSHIP_QUERY_HASH.each do |status, query|
-      if query.call(self, user).count == 1
-        return [status, query.call(self, user).first]
-      end
-    end
-    [nil, friendships.build(friend: user)]
+    # return this user's friendship with another user
+    friendships.where(friend_id: user).or(inverse_friendships.where(user_id: user)).first
   end
 end
