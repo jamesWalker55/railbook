@@ -11,7 +11,7 @@
     <%= yield %>
   <% end %>
 <% elsif mode == :remove_friend %>
-  <%= link_to friend_path(user.id), method: :delete, data: { confirm: "Remove this person as friend?" } do %>
+  <%= link_to friend_path(user.id), method: :delete, data: { confirm: "Remove this friend?" } do %>
     <%= yield %>
   <% end %>
 <% end %>
