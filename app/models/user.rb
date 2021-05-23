@@ -17,6 +17,12 @@ class User < ApplicationRecord
   # for example, User.create -> class name is "User"
   has_many :inverse_friendships, class_name: "Friendship", foreign_key: :friend_id
 
+  # send mail after user creation
+  after_create :send_welcome_mail
+  def send_welcome_mail
+    UserMailer.with(user: self).welcome_email.deliver_later
+  end
+
   def friends(include_self: false)
     forward_friend_ids = friendships.select("friend_id as user_id").where(accepted: true)
     backwards_friend_ids = inverse_friendships.select(:user_id).where(accepted: true)
