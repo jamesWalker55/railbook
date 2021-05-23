@@ -53,7 +53,7 @@
       </div>
 
       <% post.comments.each do |comment| %>
-        <%= render "post_comment", comment: comment %>
+        <%= render "shared/post_comment", comment: comment %>
       <% end %>
 
       <%= form_with model: Comment.new, class: "media" do |form| %>

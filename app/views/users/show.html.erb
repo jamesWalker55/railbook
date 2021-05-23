@@ -97,6 +97,18 @@
           <% end %>
         <% end %>
       </div>
+
+      <%# list posts if is friend with this user %>
+      <% if current_user.friends.include? @user %>
+        <h4 class="subtitle is-4 mb-2">Posts:</h4>
+        <% if @user.posts.empty? %>
+          <p>This user has no posts!</p>
+        <% else %>
+          <% @user.posts.each do |post| %>
+            <%= render "shared/post", post: post %>
+          <% end %>
+        <% end %>
+      <% end %>
     </div>
   </div>
 </div>
