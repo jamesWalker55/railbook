@@ -56,7 +56,7 @@
           <% if @user == current_user %>
             <% @user.friends.each do |friend| %>
               <%= render "user_row", user: friend do %>
-                <%= link_to friend_path(friend.id), method: :delete, data: { confirm: "Remove this friend request?" } do %>
+                <%= link_to friend_path(friend.id), method: :delete, data: { confirm: "Remove this user as friend?" } do %>
                   <button class="delete is-pulled-right"></button>
                 <% end %>
               <% end %>
