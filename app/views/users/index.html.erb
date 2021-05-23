@@ -2,8 +2,16 @@
   <div class="media">
     <div class="media-content">
       <h3 class="title is-3">All users</h3>
+      <% has_friendship = current_user.has_friendship %>
       <% @users.each do |user| %>
-        <%= render "user_row", user: user %>
+        <%= render "user_row", user: user do %>
+          <% if user == current_user %>
+            <p>This is your profile!</p>
+          <% elsif not has_friendship.include? user %>
+            <%# no relationship with user, can send request %>
+            <strong>TODO: Send friend request</strong>
+          <% end %>
+        <% end %>
       <% end %>
     </div>
   </div>

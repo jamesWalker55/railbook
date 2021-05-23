@@ -15,11 +15,7 @@
 
     <br>
 
-    <% if user == current_user %>
-      <p>This is your profile!</p>
-    <% else %>
-      <%= render "friend_buttons", user: user %>
-    <% end %>
+    <%= yield %>
 
   </div>
 

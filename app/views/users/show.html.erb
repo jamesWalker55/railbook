@@ -10,26 +10,41 @@
     </div>
     <div class="media-content">
       <% if current_user == @user %>
+
         <%# friend requests if viewing own page %>
         <% unless @user.received_friendships.empty? %>
           <h4 class="subtitle is-4 mb-2">Incoming friend requests:</h4>
           <% @user.received_friendships.includes(:user).each do |fs| %>
-            <%= render "user_row", user: fs.user %>
+            <%= render "user_row", user: fs.user do %>
+              <%= form_with model: fs do |form| %>
+                <%= form.submit "Accept friend request", class: "button is-info is-small" %>
+              <% end %>
+              <%= link_to fs, method: :delete, data: { confirm: "Decline this friend request?" } do %>
+                <button class="delete is-pulled-right"></button>
+              <% end %>
+            <% end %>
           <% end %>
           <br>
         <% end %>
         <% unless @user.sent_friendships.empty? %>
           <h4 class="subtitle is-4 mb-2">Outgoing friend requests:</h4>
           <% @user.sent_friendships.includes(:friend).each do |fs| %>
-            <%= render "user_row", user: fs.friend %>
+            <%= render "user_row", user: fs.friend do %>
+              <%= link_to fs, method: :delete, data: { confirm: "Remove this friend request?" } do %>
+                <button class="delete is-pulled-right"></button>
+              <% end %>
+            <% end %>
           <% end %>
           <br>
         <% end %>
+
       <% else %>
+
         <%# friend buttons if viewing other's page %>
         <h4 class="subtitle is-4 mb-2">Friend status:</h4>
         <%= render "friend_buttons", user: @user %>
         <br>
+
       <% end %>
 
       <%# friend list %>
@@ -38,8 +53,18 @@
         <% if @user.friends.empty? %>
           <li>No friends yet!</li>
         <% else %>
-          <% @user.friends.each do |friend| %>
-            <li><%= render "user_row", user: friend %></li>
+          <% if @user == current_user %>
+            <% @user.friends.each do |friend| %>
+              <%= render "user_row", user: friend do %>
+                <%= link_to @user.query_friendship(friend, :friends).first, method: :delete, data: { confirm: "Remove this user as friend?" } do %>
+                  <button class="delete is-pulled-right"></button>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% else %>
+            <% @user.friends.each do |friend| %>
+              <%= render "user_row", user: friend %>
+            <% end %>
           <% end %>
         <% end %>
       </ul>

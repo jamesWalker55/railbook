@@ -56,12 +56,28 @@ class User < ApplicationRecord
     end
   end
 
-  def sent_friendships
-    friendships.where(accepted: false)
+  def sent_friendships(return_users: false)
+    if return_users
+      User.where(id: friendships.select("friend_id as user_id").where(accepted: false))
+    else
+      friendships.where(accepted: false)
+    end
   end
 
-  def received_friendships
-    inverse_friendships.where(accepted: false)
+  def received_friendships(return_users: false)
+    if return_users
+      User.where(id: inverse_friendships.select(:user_id).where(accepted: false))
+    else
+      inverse_friendships.where(accepted: false)
+    end
+  end
+
+  def has_friendship
+    friends.or(sent_friendships(return_users: true)).or(received_friendships(return_users: true))
+  end
+
+  def query_friendship(user, status)
+    FRIENDSHIP_QUERY_HASH[status].call(self, user)
   end
 
   def get_friendship(user)
