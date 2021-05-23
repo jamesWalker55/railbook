@@ -1,24 +1,5 @@
-# README
+# Railbook - A limited Facebook clone in Ruby on Rails
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+![](app/assets/images/Screenshot_2021-05-23%20Railbook.png)
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+This is a Facebook clone, made as part of the [Odin Project course](https://www.theodinproject.com/paths/full-stack-ruby-on-rails/courses/ruby-on-rails/lessons/final-project).
